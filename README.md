@@ -1,73 +1,45 @@
-# React + TypeScript + Vite
+# Тестовое задание:
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Данное тестовое задание предназначено для оценки навыков работы с Javascript, TypeScript, Three.js, React, mobX, адаптивной CSS верстки.
 
-Currently, two official plugins are available:
+## Основные требования
+1.	Кандидат должен выполнить следующие задачи:
+1. Создать одностраничное приложение (SPA) с использованием React и TypeScript.
+2. Распарсить файл MIM_Scheme.xml
+3. Отобразить модель шахты в Canvas, используя three.js (react-three-fiber)
+4. Отобразить меню в левом верхнем углу со списком всех выработок
+## Детали задания
+1.	Распарсить файл MIM_Scheme.xml. Кодировка - ‘windows-1251’
+2.	Построить модели сущностей шахты
+ Для выполнения задачи достаточно сущностей:
+ - Горизонт
+ - Выработка
+ - Секция
+ - Узел
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+3. Отобразить все горизонты из MIM_Scheme.xml на сцене (геометрия должна визу-ально отображать туннель)
 
-## React Compiler
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Технические требования
+1. Приложение должно быть написано с использованием React / TypeScript. Для стейт-менеждера настоятельно рекомендуется использовать MobX, но выбор за кандидатом
+2. Для отображение графики необходимо использовать three.js (react-three-fiber)
+## Информация о сущностях:
+В распаршенном файле MIM_Scheme.xml содержатся схема шахты
+Для выполнения тестового задания достаточно отрисовать только горизонты (мас-сив Horizons)
+Каждый горизонт состоит из набора выработок (Excavation)
+Каждая выработка состоит из секций (Section)
+Каждая секция состоит из двух узлов (Node)
+Финальная сцена должна отображать секции и узлы всех горизонтов
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Критерии оценки:
+·	Читаемость кода, структура проекта, применение паттернов разработки
+·	Большим плюсом будет применение паттернов ООП при работе с сущностями шахты
+·	Адаптивность верстки под большие и маленькие экраны, в т.ч. под под экран мобильного устройства.
+·	Типизация
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Задание со звездочкой:
+Добавить возможность скрывать / отображать выработку из меню
