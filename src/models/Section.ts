@@ -1,26 +1,30 @@
+// Section.ts - исправлен
 import { makeAutoObservable } from 'mobx';
 import { Node } from './Node';
+import type { IPoint3D } from './Node';
 
 export class Section {
   id: string;
+  guid: string;
   startNode: Node;
   endNode: Node;
+  thickness: number;
   length: number;
   
-  constructor(id: string, startNode: Node, endNode: Node) {
+  constructor(id: string, guid: string, startNode: Node, endNode: Node, thickness: number = 4) {
     this.id = id;
+    this.guid = guid;
     this.startNode = startNode;
     this.endNode = endNode;
+    this.thickness = thickness;
     this.length = this.calculateLength();
     makeAutoObservable(this);
   }
   
-  // Вычисление длины секции
   private calculateLength(): number {
     return this.startNode.distanceTo(this.endNode);
   }
   
-  // Получение направления секции
   getDirection(): IPoint3D {
     return {
       x: this.endNode.position.x - this.startNode.position.x,
@@ -29,7 +33,6 @@ export class Section {
     };
   }
   
-  // Получение центра секции
   getCenter(): IPoint3D {
     return {
       x: (this.startNode.position.x + this.endNode.position.x) / 2,
@@ -38,16 +41,12 @@ export class Section {
     };
   }
   
-  // Проверка, является ли секция вертикальной
-  isVertical(): boolean {
-    return Math.abs(this.startNode.position.y - this.endNode.position.y) > 
-           Math.abs(this.startNode.position.x - this.endNode.position.x) &&
-           Math.abs(this.startNode.position.y - this.endNode.position.y) > 
-           Math.abs(this.startNode.position.z - this.endNode.position.z);
+  getRadius(): number {
+    // Радиус туннеля зависит от толщины (обычно толщина = диаметр)
+    return this.thickness / 2;
   }
   
-  // Получение длины в метрах (для информации)
-  getLengthInMeters(): string {
-    return `${this.length.toFixed(2)} м`;
+  getInfo(): string {
+    return `Section ${this.id}: length=${this.length.toFixed(2)}м, thickness=${this.thickness}`;
   }
 }
