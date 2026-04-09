@@ -1,52 +1,47 @@
-import { makeAutoObservable } from 'mobx';
-import { Section } from './Section';
+import { makeAutoObservable } from "mobx";
+import { Section } from "./Section";
 
 export class Excavation {
-  id: string;
-  name: string;
-  sections: Section[];
-  visible: boolean;
-  
-  constructor(id: string, name: string) {
+  readonly id: string;
+  readonly guid: string;
+  readonly name: string;
+  readonly objectId: string;
+  readonly excavationType: string;
+  private _sections: Section[] = [];
+  visible: boolean = true;
+
+  constructor(
+    id: string,
+    guid: string,
+    name: string,
+    objectId: string,
+    excavationType: string,
+  ) {
     this.id = id;
-    this.name = name;
-    this.sections = [];
-    this.visible = true;
+    this.guid = guid;
+    this.name = name || `Выработка ${id}`;
+    this.objectId = objectId;
+    this.excavationType = excavationType;
     makeAutoObservable(this);
   }
-  
-  // Добавление секции
+
+  get sections(): Section[] {
+    return this._sections;
+  }
+
   addSection(section: Section): void {
-    this.sections.push(section);
+    this._sections.push(section);
   }
-  
-  // Удаление секции
-  removeSection(sectionId: string): void {
-    this.sections = this.sections.filter(s => s.id !== sectionId);
-  }
-  
-  // Переключение видимости
+
   toggleVisibility(): void {
     this.visible = !this.visible;
   }
-  
-  // Установка видимости
-  setVisible(visible: boolean): void {
-    this.visible = visible;
-  }
-  
-  // Получение общей длины выработки
+
   getTotalLength(): number {
-    return this.sections.reduce((total, section) => total + section.length, 0);
+    return this._sections.reduce((total, section) => total + section.length, 0);
   }
-  
-  // Получение количества секций
-  getSectionsCount(): number {
-    return this.sections.length;
-  }
-  
-  // Получение информации о выработке
+
   getInfo(): string {
-    return `${this.name}: ${this.getSectionsCount()} секций, общая длина ${this.getTotalLength().toFixed(2)} м`;
+    return `${this.name}: ${this._sections.length} секций, ${this.getTotalLength().toFixed(0)}м`;
   }
 }

@@ -1,53 +1,55 @@
-import { makeAutoObservable } from 'mobx';
-import { Node } from './Node';
+import { makeAutoObservable } from "mobx";
+import { Node, type IPoint3D } from "./Node";
 
 export class Section {
-  id: string;
-  startNode: Node;
-  endNode: Node;
-  length: number;
-  
-  constructor(id: string, startNode: Node, endNode: Node) {
+  readonly id: string;
+  readonly guid: string;
+  readonly startNode: Node;
+  readonly endNode: Node;
+  readonly thickness: number;
+  readonly length: number;
+
+  constructor(
+    id: string,
+    guid: string,
+    startNode: Node,
+    endNode: Node,
+    thickness: number = 4,
+  ) {
     this.id = id;
+    this.guid = guid;
     this.startNode = startNode;
     this.endNode = endNode;
+    this.thickness = thickness;
     this.length = this.calculateLength();
     makeAutoObservable(this);
   }
-  
-  // Вычисление длины секции
+
   private calculateLength(): number {
     return this.startNode.distanceTo(this.endNode);
   }
-  
-  // Получение направления секции
+
   getDirection(): IPoint3D {
     return {
       x: this.endNode.position.x - this.startNode.position.x,
       y: this.endNode.position.y - this.startNode.position.y,
-      z: this.endNode.position.z - this.startNode.position.z
+      z: this.endNode.position.z - this.startNode.position.z,
     };
   }
-  
-  // Получение центра секции
+
   getCenter(): IPoint3D {
     return {
       x: (this.startNode.position.x + this.endNode.position.x) / 2,
       y: (this.startNode.position.y + this.endNode.position.y) / 2,
-      z: (this.startNode.position.z + this.endNode.position.z) / 2
+      z: (this.startNode.position.z + this.endNode.position.z) / 2,
     };
   }
-  
-  // Проверка, является ли секция вертикальной
-  isVertical(): boolean {
-    return Math.abs(this.startNode.position.y - this.endNode.position.y) > 
-           Math.abs(this.startNode.position.x - this.endNode.position.x) &&
-           Math.abs(this.startNode.position.y - this.endNode.position.y) > 
-           Math.abs(this.startNode.position.z - this.endNode.position.z);
+
+  getRadius(): number {
+    return this.thickness / 2;
   }
-  
-  // Получение длины в метрах (для информации)
-  getLengthInMeters(): string {
-    return `${this.length.toFixed(2)} м`;
+
+  getInfo(): string {
+    return `Section ${this.id}: length=${this.length.toFixed(2)}м, thickness=${this.thickness}`;
   }
 }
