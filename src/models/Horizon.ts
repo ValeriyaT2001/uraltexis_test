@@ -1,4 +1,3 @@
-// Horizon.ts - исправлен
 import { makeAutoObservable } from 'mobx';
 import { Excavation } from './Excavation';
 
@@ -40,5 +39,13 @@ export class Horizon {
   
   getInfo(): string {
     return `${this.name} (${this.altitude}м): ${this.excavations.length} выработок`;
+  }
+  
+  toggleVisibility(): void {
+    this.visible = !this.visible;
+  }
+  
+  setVisible(visible: boolean): void {
+    this.visible = visible;
   }
 }

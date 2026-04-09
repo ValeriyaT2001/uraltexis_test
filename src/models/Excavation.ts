@@ -1,46 +1,47 @@
-// Excavation.ts - исправлен
-import { makeAutoObservable } from 'mobx';
-import { Section } from './Section';
+import { makeAutoObservable } from "mobx";
+import { Section } from "./Section";
 
 export class Excavation {
-  id: string;
-  guid: string;
-  name: string;
-  objectId: string;
-  excavationType: string;
-  sectionIds: string[];
-  sections: Section[];
-  visible: boolean;
-  
-  constructor(id: string, guid: string, name: string, objectId: string, excavationType: string) {
+  readonly id: string;
+  readonly guid: string;
+  readonly name: string;
+  readonly objectId: string;
+  readonly excavationType: string;
+  private _sections: Section[] = [];
+  visible: boolean = true;
+
+  constructor(
+    id: string,
+    guid: string,
+    name: string,
+    objectId: string,
+    excavationType: string,
+  ) {
     this.id = id;
     this.guid = guid;
-    this.name = name;
+    this.name = name || `Выработка ${id}`;
     this.objectId = objectId;
     this.excavationType = excavationType;
-    this.sectionIds = [];
-    this.sections = [];
-    this.visible = true;
     makeAutoObservable(this);
   }
-  
-  setSectionIds(sectionIdsString: string): void {
-    this.sectionIds = sectionIdsString.split(',').map(id => id.trim());
+
+  get sections(): Section[] {
+    return this._sections;
   }
-  
+
   addSection(section: Section): void {
-    this.sections.push(section);
+    this._sections.push(section);
   }
-  
+
   toggleVisibility(): void {
     this.visible = !this.visible;
   }
-  
+
   getTotalLength(): number {
-    return this.sections.reduce((total, section) => total + section.length, 0);
+    return this._sections.reduce((total, section) => total + section.length, 0);
   }
-  
+
   getInfo(): string {
-    return `${this.name}: ${this.sections.length} секций, длина ${this.getTotalLength().toFixed(2)}м`;
+    return `${this.name}: ${this._sections.length} секций, ${this.getTotalLength().toFixed(0)}м`;
   }
 }

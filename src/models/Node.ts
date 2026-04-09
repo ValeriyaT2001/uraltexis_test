@@ -1,4 +1,3 @@
-// Node.ts - исправлен
 import { makeAutoObservable } from 'mobx';
 
 export interface IPoint3D {
@@ -8,9 +7,9 @@ export interface IPoint3D {
 }
 
 export class Node {
-  id: string;
-  guid: string;
-  position: IPoint3D;
+  readonly id: string;
+  readonly guid: string;
+  readonly position: IPoint3D;  
   
   constructor(id: string, guid: string, x: number, y: number, z: number) {
     this.id = id;
@@ -24,6 +23,10 @@ export class Node {
     const dy = this.position.y - other.position.y;
     const dz = this.position.z - other.position.z;
     return Math.sqrt(dx * dx + dy * dy + dz * dz);
+  }
+  
+   toJSON(): IPoint3D {
+    return { ...this.position };
   }
   
   clone(): Node {
